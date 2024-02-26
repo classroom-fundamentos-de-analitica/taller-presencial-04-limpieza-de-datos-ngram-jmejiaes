@@ -12,17 +12,32 @@ def create_key(df, n):
 
     df = df.copy()
 
+    # 1. Copie la columna 'text' a la columna 'fingerprint'
+    df["fingerprint"] = df["text"]
     # Copie la columna 'text' a la columna 'key'
     # Remueva los espacios en blanco al principio y al final de la cadena
     # Convierta el texto a minúsculas
     # Transforme palabras que pueden (o no) contener guiones por su version sin guion.
     # Remueva puntuación y caracteres de control
     # Convierta el texto a una lista de tokens
+    df["fingerprint"] = (
+        df["fingerprint"]
+        .str.strip()
+        .str.lower()
+        .str.replace("-", "")
+        .str.translate(str.maketrans("", "", "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"))
+        .str.split()
+        .str.join("")
+        .apply(lambda x: [x[i : i + n] for i in range(len(x) - n + 1)])
+        .apply(lambda x: sorted(set(x)))
+        .str.join(" ")
+    )
+
     # Una el texto sin espacios en blanco
     # Convierta el texto a una lista de n-gramas
     # Ordene la lista de n-gramas y remueve duplicados
     # Convierta la lista de ngramas a una cadena
-    
+
     return df
 
 
