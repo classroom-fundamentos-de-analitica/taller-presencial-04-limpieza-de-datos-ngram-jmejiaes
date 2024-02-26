@@ -8,10 +8,10 @@ def load_data(input_file):
     return df
 
 
-def create_key(df, n):
+def create_key(df1, n):
     """Cree una nueva columna en el DataFrame que contenga el key de la columna 'text'"""
 
-    df = df.copy()
+    df = df1.copy()
 
     # Copie la columna 'text' a la columna 'key'
     df["key"] = df["text"]
